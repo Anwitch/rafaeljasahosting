@@ -32,6 +32,30 @@ Semua data geospasial (titik, garis, poligon) disimpan di MySQL secara fleksibel
 
 ---
 
+## Deploy ke Coolify
+
+Repo ini sudah disiapkan untuk dibuild sebagai container PHP-Apache. Di Coolify, pakai sumber Git dari:
+
+`https://git.ifuntanhub.dev/RafaelGerhardPanjaitan/UAS_SIG_WebGIS.git`
+
+Langkah ringkas:
+
+1. Buat application baru dari Git repository.
+2. Pilih build pack `Dockerfile`.
+3. Gunakan `Dockerfile` di root repo ini.
+4. Hubungkan aplikasi ke service MySQL/MariaDB milik project Coolify Anda.
+5. Set environment variables berikut di aplikasi:
+   - `DB_HOST`
+   - `DB_NAME`
+   - `DB_USER`
+   - `DB_PASS`
+6. Import schema dari `database.sql` ke database yang dipakai aplikasi.
+7. Pastikan `DB_HOST` menunjuk ke hostname internal database Coolify, bukan `localhost`.
+
+Jika database belum punya tabel, jalankan `api/init_db.php` sekali dari browser setelah service database aktif, atau import `database.sql` langsung dari panel database Coolify.
+
+---
+
 ## 🚀 Panduan Instalasi & Menjalankan Aplikasi
 
 Karena aplikasi ini sekarang menggunakan **PHP dan MySQL**, Anda tidak bisa langsung membuka file HTML-nya. Ikuti langkah berikut menggunakan **XAMPP**:

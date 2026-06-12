@@ -1,0 +1,12 @@
+.git
+.gitignore
+.agents
+.codex
+**/.git
+**/.git/**
+**/.idea
+**/.vscode
+**/node_modules
+deploy.py
+README.md
+

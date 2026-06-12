@@ -1,8 +1,8 @@
 <?php
-$host = 'localhost';
-$db   = 'webgis_bansos';
-$user = 'root';
-$pass = ''; // Default XAMPP password is empty
+$host = getenv('DB_HOST') ?: 'localhost';
+$db   = getenv('DB_NAME') ?: 'webgis_bansos';
+$user = getenv('DB_USER') ?: 'root';
+$pass = getenv('DB_PASS') ?: '';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";

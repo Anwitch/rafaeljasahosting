@@ -5,7 +5,7 @@ const App = {
   state:{ activeLayer:'spbu' },
   _groups:{},
 
-  init(){
+  async init(){
     // Map
     this._map=L.map('map',{zoomControl:false}).setView([-0.056031,109.348641],13);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
@@ -49,14 +49,15 @@ const App = {
     document.getElementById('modal-close').addEventListener('click', Modal.close);
     document.getElementById('modal-ov').addEventListener('click',e=>{ if(e.target===e.currentTarget) Modal.close(); });
 
+    await Store.load();
     this.refresh();
   },
 
   crud:{
     edit(ln,id){ App.state.activeLayer=ln; Modal.openEdit(ln,id); },
-    delete(ln,id){
+    async delete(ln,id){
       if(!confirm('Yakin hapus data ini?')) return;
-      Store.remove(ln,id); App._map.closePopup();
+      await Store.remove(ln,id); App._map.closePopup();
       App.refresh(); Toast.info('Data dihapus');
     },
   },

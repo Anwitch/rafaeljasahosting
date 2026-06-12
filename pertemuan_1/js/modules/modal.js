@@ -42,11 +42,11 @@ const Modal = (() => {
 
   function close(){ ov().classList.add('hidden'); Draw.clearPending(); }
 
-  function submit(){
+  async function submit(){
     const data=Forms.readAll(_ln); if(!data) return;
     if(_editId){
       data.updatedAt=H.today();
-      Store.update(_ln,_editId,data);
+      await Store.update(_ln,_editId,data);
       Toast.success('Data berhasil diperbarui');
     } else {
       const geo=_geo;
@@ -58,7 +58,7 @@ const Modal = (() => {
         data.coords=geo.getLatLngs()[0].map(l=>[l.lat,l.lng]);
       }
       data.id=H.uid(); data.createdAt=H.today(); data.updatedAt=H.today();
-      Store.add(_ln,data);
+      await Store.add(_ln,data);
       Toast.success('Data berhasil disimpan');
     }
     close(); App.refresh();

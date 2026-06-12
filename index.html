@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal WebGIS - Praktikum SIG</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --text-main: #f8fafc;
+      --text-muted: #cbd5e1;
+      --accent-1: #34d47e; /* SPBU green */
+      --accent-2: #f0a030; /* Jalan orange */
+      --accent-3: #9b7bfa; /* Parsil purple */
+      --accent-hover: #3b82f6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--bg-color);
+      background-image: 
+        radial-gradient(at 0% 0%, rgba(52, 212, 126, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(155, 123, 250, 0.15) 0px, transparent 50%),
+        radial-gradient(at 100% 100%, rgba(240, 160, 48, 0.15) 0px, transparent 50%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 4rem;
+      animation: fadeInDown 0.8s ease-out;
+    }
+
+    h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, #fff, #cbd5e1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -1px;
+    }
+
+    p.subtitle {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      width: 100%;
+      max-width: 1200px;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      text-decoration: none;
+      color: var(--text-main);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--accent-1);
+      transition: height 0.3s ease;
+      opacity: 0.8;
+    }
+
+    .card:nth-child(2)::before { background: var(--accent-2); }
+    .card:nth-child(3)::before { background: linear-gradient(90deg, var(--accent-3), #2ec4b6); }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .card-title-icon {
+      font-size: 1.75rem;
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      flex-grow: 1;
+    }
+
+    .card-features {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .feature-tag {
+      font-size: 0.75rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-muted);
+    }
+
+    .card-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+      border-radius: 10px;
+      font-weight: 500;
+      transition: all 0.2s ease;
+      margin-top: auto;
+    }
+
+    .card:hover .card-btn {
+      background: white;
+      color: var(--bg-color);
+    }
+
+    .card:hover .card-btn svg {
+      transform: translateX(4px);
+    }
+
+    .card-btn svg {
+      transition: transform 0.2s ease;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    footer {
+      margin-top: 4rem;
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      opacity: 0.7;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Portal WebGIS</h1>
+    <p class="subtitle">Pilih modul pertemuan di bawah ini untuk mengakses sistem pemetaan geospasial.</p>
+  </header>
+
+  <div class="grid-container">
+    
+    <!-- Pertemuan 1 -->
+    <a href="pertemuan_1/index.html" class="card">
+      <div class="card-title">
+        <span class="card-title-icon">📍</span> Pertemuan 1
+      </div>
+      <p class="card-desc">Fokus pada digitasi Point (Titik) untuk mendata persebaran dan informasi Stasiun Bahan Bakar Umum (SPBU).</p>
+      <div class="card-features">
+        <span class="feature-tag">Point</span>
+        <span class="feature-tag">Data SPBU</span>
+      </div>
+      <div class="card-btn">
+        Buka Aplikasi
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </div>
+    </a>
+
+    <!-- Pertemuan 2 -->
+    <a href="pertemuan_2/index.html" class="card">
+      <div class="card-title">
+        <span class="card-title-icon">🛣️</span> Pertemuan 2
+      </div>
+      <p class="card-desc">Pengembangan digitasi spasial lanjutan dengan menambahkan fitur Polyline (Jalan) dan Polygon (Parsil Tanah).</p>
+      <div class="card-features">
+        <span class="feature-tag">Point</span>
+        <span class="feature-tag">Polyline</span>
+        <span class="feature-tag">Polygon</span>
+      </div>
+      <div class="card-btn">
+        Buka Aplikasi
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </div>
+    </a>
+
+    <!-- Pertemuan 3 -->
+    <a href="pertemuan_3/index.html" class="card">
+      <div class="card-title">
+        <span class="card-title-icon">🌐</span> Pertemuan 3
+      </div>
+      <p class="card-desc">Sistem komprehensif Distribusi Bansos Berbasis Rumah Ibadah dengan dashboard analitik dan radius spasial otomatis.</p>
+      <div class="card-features">
+        <span class="feature-tag">All Geometries</span>
+        <span class="feature-tag">Data Warga</span>
+        <span class="feature-tag">Dashboard Analitik</span>
+      </div>
+      <div class="card-btn">
+        Buka Aplikasi
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </div>
+    </a>
+
+  </div>
+
+  <footer>
+    &copy; Praktikum Sistem Informasi Geografis
+  </footer>
+
+</body>
+</html>
